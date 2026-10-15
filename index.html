@@ -14,7 +14,6 @@
       --bg-card-hover: #161e2b;
       --accent-blue: #00f0ff;
       --accent-blue-glow: rgba(0, 240, 255, 0.25);
-      --accent-blue-dark: #0088cc;
       --text-primary: #ffffff;
       --text-secondary: #94a3b8;
       --text-muted: #64748b;
@@ -519,6 +518,122 @@
       transform: scale(1.05);
     }
 
+    /* Scheduling Carousel & Time Grid UI */
+    .sched-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .days-carousel {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+      scrollbar-width: none;
+    }
+
+    .days-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .day-card {
+      min-width: 70px;
+      height: 80px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .day-card.selected {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: var(--bg-dark);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    }
+
+    .day-card.selected .day-name,
+    .day-card.selected .day-num,
+    .day-card.selected .day-month {
+      color: var(--bg-dark);
+    }
+
+    .day-name {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+
+    .day-num {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin: 2px 0;
+    }
+
+    .day-month {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .time-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .time-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .time-card.selected {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+    }
+
+    .selection-summary-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+      margin-bottom: 16px;
+    }
+
     /* Bottom Navigation Bar */
     .nav-bar {
       position: fixed;
@@ -570,16 +685,16 @@
       filter: drop-shadow(0 0 6px var(--accent-blue-glow));
     }
 
-    /* Form Fields for Scheduling */
+    /* Form Fields */
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .form-label {
       font-size: 0.8rem;
       font-weight: 600;
       color: var(--text-secondary);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       display: block;
     }
 
@@ -711,42 +826,44 @@
       </div>
     </section>
 
-    <!-- SECTION 5: CONFIRMAÇÃO DE AGENDAMENTO -->
+    <!-- SECTION 5: CONFIRMAÇÃO DE AGENDAMENTO (NOVO FORMATO ESTILO APP) -->
     <section id="sec-schedule" class="content-section">
       <div class="section-header">
-        <h2 class="section-title">Finalizar Agendamento</h2>
-        <p class="section-desc">Preencha os detalhes para enviar o pedido no WhatsApp.</p>
+        <h2 class="section-title">Agendamento</h2>
+        <p class="section-desc">Selecione o dia e horário desejados.</p>
       </div>
 
-      <form id="booking-form" onsubmit="sendWhatsApp(event)">
-        <div class="form-group">
-          <label class="form-label">Seu Nome</label>
-          <input type="text" id="client-name" class="form-input" placeholder="Digite seu nome completo" required>
-        </div>
+      <div class="form-group">
+        <label class="form-label">Seu Nome</label>
+        <input type="text" id="client-name" class="form-input" placeholder="Digite seu nome completo" required>
+      </div>
 
-        <div class="form-group">
-          <label class="form-label">Barbeiro de Preferência</label>
-          <select id="barber-select" class="form-input" style="color: #fff; background: var(--bg-card);">
-            <option value="Sem preferência">Sem preferência</option>
-            <option value="Jhonatan">Jhonatan</option>
-            <option value="Alan">Alan</option>
-          </select>
-        </div>
+      <div class="form-group">
+        <label class="form-label">Barbeiro de Preferência</label>
+        <select id="barber-select" class="form-input" style="color: #fff; background: var(--bg-card);">
+          <option value="Sem preferência">Sem preferência</option>
+          <option value="Jhonatan">Jhonatan</option>
+          <option value="Alan">Alan</option>
+        </select>
+      </div>
 
-        <div class="form-group">
-          <label class="form-label">Data Desejada</label>
-          <input type="date" id="booking-date" class="form-input" required>
-        </div>
+      <div class="sched-label" style="margin-top: 16px;">Selecione o Dia:</div>
+      <div class="days-carousel" id="days-carousel">
+        <!-- Rendered by JS -->
+      </div>
 
-        <div class="form-group">
-          <label class="form-label">Horário Desejado</label>
-          <input type="time" id="booking-time" class="form-input" min="08:00" max="18:30" required>
-        </div>
+      <div class="sched-label">Selecione o Horário:</div>
+      <div class="time-grid" id="time-grid">
+        <!-- Rendered by JS -->
+      </div>
 
-        <button type="submit" class="btn-main" style="margin-top: 20px;">
-          <span>Confirmar pelo WhatsApp</span>
-        </button>
-      </form>
+      <div class="selection-summary-box" id="selection-summary-box">
+        Selecione o dia e o horário acima
+      </div>
+
+      <button type="button" class="btn-main" onclick="sendWhatsApp()">
+        <span>Enviar Agendamento no WhatsApp</span>
+      </button>
     </section>
 
     <!-- STICKY SELECTION BAR -->
@@ -791,8 +908,19 @@
       { id: 'sobrancelha', name: 'Sobrancelha', price: 15.00 }
     ];
 
+    const timeSlots = [
+      "08:00", "08:45", "09:30", "10:15", "11:00", "11:45",
+      "12:30", "13:15", "14:00", "14:45", "15:30", "16:15",
+      "17:00", "17:45", "18:30", "19:15"
+    ];
+
     let selectedServices = new Set();
     let navigationHistory = ['home'];
+    let selectedDate = null;
+    let selectedTime = null;
+
+    const daysOfWeekNames = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
+    const monthsNames = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
 
     function updateGreeting() {
       const hour = new Date().getHours();
@@ -858,6 +986,69 @@
       document.getElementById('sticky-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
     }
 
+    function renderSchedulingUI() {
+      // Render Days Carousel (Next 14 days)
+      const carousel = document.getElementById('days-carousel');
+      if (!carousel) return;
+      carousel.innerHTML = '';
+
+      const today = new Date();
+      for (let i = 0; i < 14; i++) {
+        const d = new Date();
+        d.setDate(today.getDate() + i);
+
+        const dayName = daysOfWeekNames[d.getDay()];
+        const dayNum = d.getDate();
+        const monthName = monthsNames[d.getMonth()];
+        const dateString = d.toISOString().split('T')[0];
+
+        if (i === 0 && !selectedDate) {
+          selectedDate = dateString;
+        }
+
+        const card = document.createElement('div');
+        card.className = `day-card ${selectedDate === dateString ? 'selected' : ''}`;
+        card.onclick = () => {
+          selectedDate = dateString;
+          renderSchedulingUI();
+        };
+        card.innerHTML = `
+          <span class="day-name">${dayName}</span>
+          <span class="day-num">${dayNum}</span>
+          <span class="day-month">${monthName}</span>
+        `;
+        carousel.appendChild(card);
+      }
+
+      // Render Time Grid
+      const timeGrid = document.getElementById('time-grid');
+      if (!timeGrid) return;
+      timeGrid.innerHTML = '';
+
+      timeSlots.forEach(t => {
+        if (!selectedTime && t === timeSlots[0]) {
+          selectedTime = t;
+        }
+
+        const tCard = document.createElement('div');
+        tCard.className = `time-card ${selectedTime === t ? 'selected' : ''}`;
+        tCard.onclick = () => {
+          selectedTime = t;
+          renderSchedulingUI();
+        };
+        tCard.innerText = t;
+        timeGrid.appendChild(tCard);
+      });
+
+      // Update Summary Box
+      const summaryBox = document.getElementById('selection-summary-box');
+      if (summaryBox && selectedDate && selectedTime) {
+        const [y, m, day] = selectedDate.split('-');
+        const dateFormatted = `${day}/${m}/${y}`;
+        summaryBox.innerText = `📅 ${dateFormatted} às ${selectedTime} --`;
+      }
+    }
+
     function switchTab(tabId, pushHistory = true) {
       document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -870,6 +1061,10 @@
 
       if (pushHistory && navigationHistory[navigationHistory.length - 1] !== tabId) {
         navigationHistory.push(tabId);
+      }
+
+      if (tabId === 'schedule') {
+        renderSchedulingUI();
       }
 
       const btnBack = document.getElementById('btn-back');
@@ -895,12 +1090,15 @@
       }
     }
 
-    function sendWhatsApp(e) {
-      e.preventDefault();
-      const name = document.getElementById('client-name').value;
+    function sendWhatsApp() {
+      const name = document.getElementById('client-name').value.trim();
       const barber = document.getElementById('barber-select').value;
-      const date = document.getElementById('booking-date').value;
-      const time = document.getElementById('booking-time').value;
+
+      if (!name) {
+        alert('Por favor, digite seu nome completo.');
+        document.getElementById('client-name').focus();
+        return;
+      }
 
       let selectedNames = [];
       let total = 0;
@@ -913,17 +1111,20 @@
       });
 
       if (selectedNames.length === 0) {
-        alert('Por favor, selecione pelo menos um serviço antes de finalizar.');
+        alert('Por favor, selecione pelo menos um serviço antes de agendar.');
         switchTab('services');
         return;
       }
+
+      const [y, m, day] = selectedDate.split('-');
+      const dateFormatted = `${day}/${m}/${y}`;
 
       const message = `Olá! Gostaria de agendar um horário na VOKTA Barbearia.\n\n` +
         `👤 *Cliente:* ${name}\n` +
         `✂️ *Serviço(s):* ${selectedNames.join(', ')}\n` +
         `💈 *Barbeiro:* ${barber}\n` +
-        `📅 *Data:* ${date}\n` +
-        `⏰ *Horário:* ${time}\n` +
+        `📅 *Data:* ${dateFormatted}\n` +
+        `⏰ *Horário:* ${selectedTime}\n` +
         `💰 *Valor Total:* R$ ${total.toFixed(2).replace('.', ',')}`;
 
       const phone = '5511999999999';
